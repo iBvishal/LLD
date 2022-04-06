@@ -1,5 +1,14 @@
 ### Ride sharing application
-Run the following command to test the design against test cases written in app.py
+Activate the virtual env
 ```sh
-python app.py 
+source venv/bin/activate
+```
+change the directory
+```sh
+cd ride_sharing_design/code
+```
+
+Run the test cases
+```sh
+pytest test_app.py 
 ```

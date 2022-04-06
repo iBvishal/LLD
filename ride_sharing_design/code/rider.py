@@ -8,9 +8,10 @@ class Rider():
         self.currentRide    = None
     
     def createRide(self, id, source, dest, seats):
+        reason = None
         if source >= dest:
-            print("Wrong values of Origin and Destination...")
-            return
+            reason = "Wrong values of Origin and Destination."
+            return False, reason
 
         self.currentRide = Ride(
             id = id,
@@ -18,53 +19,61 @@ class Rider():
             dest = dest,
             seats =seats
         )
+        return True, reason
 
     def updateRide(self, id, source, dest, seats):
+        reason = None
         if self.currentRide == None:
-            self.createRide(id, source, dest, seats)
-            return
+            return self.createRide(id, source, dest, seats)
         
         if self.currentRide.rideStatus == RideStatus.CANCELLED.value:
-            print("Cannot update ride for cancelled ride...")
-            return
+            reason = "Cannot update ride for cancelled ride."
+            return False, reason
         
         if self.currentRide.rideStatus == RideStatus.COMPLETED.value:
-            print("Cannot update ride for completed ride...")
-            return
+            reason = "Cannot update ride for completed ride."
+            return False, reason
 
         if source >= dest:
-            print("Wrong values of Origin and Destination...")
-            return
+            reason = "Wrong values of Origin and Destination."
+            return False, reason
 
         self.currentRide.id = id
         self.currentRide.source = source
         self.currentRide.dest = dest
         self.currentRide.seats = seats
+        return True, reason
 
     def withdrawRide(self, id):
-        
+        reason = None
         if self.currentRide == None:
-            print("No ride created yet...")
-            return
+            reason = "No ride created yet."
+            return False, reason
 
         if self.currentRide.id != id:
-            print("Wrong id passed...")
-            return
+            reason = "Wrong id passed."
+            return False, reason
         
         if self.currentRide.rideStatus != RideStatus.BOOKED.value:
-            print("Ride wasn't created. Can't withdraw...")
-            return
+            reason = "Ride wasn't created. Can't withdraw."
+            return False, reason
         
         self.currentRide.rideStatus = RideStatus.CANCELLED.value
+        return True, reason
 
     def closeRide(self):
+        reason = None
+        if(self.currentRide == None):
+            reason = "No ride active for Rider."
+            return 0, reason
+
         if self.currentRide.rideStatus != RideStatus.BOOKED.value:
-            print("Ride wasn't in progress. Can't close...")
-            return 0
+            reason = "Ride wasn't in progress. Can't close."
+            return 0, reason
         
         self.currentRide.rideStatus = RideStatus.COMPLETED.value
         self.completdRides.append(self.currentRide)
-        print(self.currentRide.calculateFare(len(self.completdRides)))
+        return self.currentRide.calculateFare(len(self.completdRides)), reason
 
 
 

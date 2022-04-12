@@ -8,4 +8,9 @@ class CardStatus(enum.Enum):
     TODO = 1
     WORKING = 2
     DONE = 3
+
+class UserRole(enum.Enum):
+    SUPERADMIN = 1
+    ADMIN = 2
+    VIEWER = 3
     

@@ -1,0 +1,110 @@
+class user
+    id as uuid
+    name as string
+    email as email
+
+    cards as List<cards>
+
+    init(self, name, email)
+        self.name = name
+        self.email = email
+
+    updateUser(self, name, email)
+
+    listUser()
+
+    getAssignedCards()
+
+class board
+    id as uuid
+    isPublic boolean
+    name as string
+    url as string
+    memberList as List<user>
+    columns as List<column>
+    createAt as Datetime
+    createdBy as user
+
+    init(self, name, isPublic = True, user):
+        self.id = uuid.UUID()
+        self.name = name
+        self.isPublic = isPublic
+        self.createAt = getUTC()
+        self.createdBy = user
+        self.url = str('/' + self.id)
+
+    deleteBoard(self, id):
+        for column in columns:
+            column.deleteColumn()
+        del columns
+
+    ListMembers(self, id)
+    
+    addMember(self, user)
+
+    removeMember(self, user)
+
+    moveCard(self, fromColumn, toColumn, card)
+
+    showBoard(self)
+        for user in memberList:
+            print(user.name, user.email)
+        for col in columns:
+            col.showColumn()
+        
+
+class column
+    
+    name as string
+    id as uuid
+    boardId as uuid
+    cards as List<card>
+    columnURL as string
+
+    init(self, name, id, boardinstance)
+        self.id = uuid.UUID()
+        self.name = name
+        self.board = boardinstance
+        self.url = str(boardinstance.url) + '/column/' + str(self.id)
+        
+
+    addcolumn(self, name)
+
+    showColumn()
+        for card in cards:
+            card.showCard()
+
+    deleteColumn(self):
+        for card in cards:
+            del card
+        cards = []
+
+
+class card
+    id as uuid
+    columnId as uuid
+    name as string
+    description as string
+    assignedUser as user
+
+    init(self, column, name, description)
+
+    updateCard(self, columnsId, name, description)
+
+    assignUser(User)
+        self.assignUser = user
+        user.cards.append(self)
+
+    deletecard(self, id)
+
+    __repr__():
+        return f'(name={self.name})'
+
+
+
+class myInterface:
+    user = user("Vishal", "vishab@esper.io")
+
+    board = Board("firstBoard", true, user)
+
+
